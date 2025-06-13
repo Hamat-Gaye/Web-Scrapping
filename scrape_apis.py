@@ -49,4 +49,4 @@ for row in ws.iter_rows(min_row=2, values_only=True):
     output_ws.append([service_name, url, total, failures, errors, skipped])
 
 output_wb.save("api_unit_test_results.xlsx")
-print("Scraping complete. Results saved to api_unit_test_results.xlsx.")
+print("Scraping completed. Results saved to api_unit_test_results.xlsx.")
