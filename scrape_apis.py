@@ -22,12 +22,14 @@ for row in ws.iter_rows(min_row=2, values_only=True):
     service_name = row[0]    
     api_route = row[1]     
     
-    url = f"http://{api_route.replace('{{PORT}}', str(PORT))}"
+    url = f"http://{api_route.replace('{{PORT}}', str(PORT)+'/apis')}"
 
     try:
         response = requests.get(url)
         response.raise_for_status()
+
         soup = BeautifulSoup(response.text, "html.parser")
+
 
         table = soup.find("table", id="unit-tests")
         if not table:
@@ -43,7 +45,8 @@ for row in ws.iter_rows(min_row=2, values_only=True):
         errors = data.get("errors", "N/A")
         skipped = data.get("skipped", "N/A")
 
-    except Exception:
+    except Exception as e:
+        print(f'An error occured {e}')
         total = failures = errors = skipped = "N/A"
 
     output_ws.append([service_name, url, total, failures, errors, skipped])
