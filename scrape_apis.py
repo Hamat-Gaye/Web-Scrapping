@@ -28,7 +28,7 @@ for row in ws.iter_rows(min_row=2, values_only=True):
         response = requests.get(url)
         response.raise_for_status()
 
-        soup = BeautifulSoup(response.text, "html.parser")
+        soup = BeautifulSoup(response.text, "lxml")
 
 
         table = soup.find("table", id="unit-tests")
