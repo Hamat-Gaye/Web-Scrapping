@@ -1,12 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook, Workbook
+import os
+from dotenv import load_dotenv
+from openpyxl.styles.builtins import output
 
-PORT = 5500
+# Load environment variables from .env file
+load_dotenv()
+
+PORT = os.getenv("PORT_NUMBER", "5000")  # Default to 5000 if not set
 
 # Load input Excel file
-input_file = 'AmatGayetesteasy.xlsx'
-sheet_name = 'service_api'
+input_file = os.getenv("input_file")
+sheet_name = os.getenv("sheet_name", "Sheet1")  # Default to "Sheet1" if not set
+
+output_file = os.getenv("output_file")
 
 wb = load_workbook(input_file)
 ws = wb[sheet_name]
@@ -51,5 +59,6 @@ for row in ws.iter_rows(min_row=2, values_only=True):
 
     output_ws.append([service_name, url, total, failures, errors, skipped])
 
-output_wb.save("api_unit_test_results.xlsx")
-print("Scraping completed. Results saved to api_unit_test_results.xlsx.")
+# Save the results to an output Excel file
+output_wb.save(output_file)
+print("Scraping completed. Results saved to the output file.")
